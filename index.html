@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Weather Demo — OpenWeatherMap API</title>
+  <link rel="stylesheet" href="./CSS/style.css" />
+  <script src="./JS/index.js" type="module" defer></script>
+</head>
+<body>
+  <main class="container">
+    <h1>Weather demo (OpenWeatherMap)</h1>
+
+    <section id="controls" class="card">
+      <label>
+        City:
+        <input id="cityInput" type="text" placeholder="e.g., Toronto" />
+      </label>
+      <button id="getWeatherBtn">Get Weather</button>
+      <button id="geoBtn">Use My Location</button>
+    </section>
+
+    <section id="current" class="card hidden">
+      <h2>Current Weather</h2>
+      <div id="currentContent"></div>
+    </section>
+
+    <section id="forecast" class="card hidden">
+      <h2>3-Hour Forecast (next 6 entries)</h2>
+      <div id="forecastContent"></div>
+    </section>
+
+    <footer>
+      <small>
+        Data from <a href="https://openweathermap.org/api" target="_blank">OpenWeatherMap API</a>.
+      </small>
+    </footer>
+  </main>
+
+</body>
+</html>
