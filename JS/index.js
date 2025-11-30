@@ -32,6 +32,31 @@ async function getWeatherByCity(city) {
         alert("Could not retrieve weather data. Please try again later.");
     }
 }
+
+elements.geoBtn.addEventListener("click", () => {
+    if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser.");
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(
+        (pos) => getWeatherByCoords(pos.coords.latitude, pos.coords.longitude),
+        (err) => alert("Could not get location: " + err.message)
+    );
+});
+
+async function getWeatherByCoords(lat, lon) {
+    try {
+        const URL = `${BASE}weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
+        const res = await fetch(URL);
+        if (!res.ok) throw new Error(`API error ${res.status}`);
+        const data = await res.json();
+        showCurrent(data);
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+        alert("Could not retrieve weather data. Please try again later.");
+    }
+}
+
 showCurrent()
 function showCurrent(data) {
   elements.currentSection.classList.remove("hidden");
