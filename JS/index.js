@@ -1,3 +1,7 @@
+// Documentation followed for this project (academic integrity requirement):
+// OpenWeatherMap API documentation: https://openweathermap.org/api
+// Used for: Generating API key, understanding endpoints, and fetching weather + forecast data.
+
 const API_KEY = "589c2809acb21d474d24f841402940ee";
 const BASE = "https://api.openweathermap.org/data/2.5/";
 
@@ -92,7 +96,7 @@ async function getForecastByCoords(lat, lon) {
 
 function showForecast(data) {
   elements.forecastSection.classList.remove("hidden");
-  // show next 6 entries (3-hr intervals)
+  // show next 6 entries
   const nextSix = data.list.slice(0, 6);
   elements.forecastContent.innerHTML = nextSix.map(item => {
     const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
