@@ -27,6 +27,7 @@ async function getWeatherByCity(city) {
         if (!res.ok) throw new Error(`API error ${res.status}`);
         const data = await res.json();
         showCurrent(data);
+        getForecastByCoords(data.coord.lat, data.coord.lon);
     } catch (error) {
         console.error("Error fetching weather data:", error);
         alert("Could not retrieve weather data. Please try again later.");
@@ -51,6 +52,7 @@ async function getWeatherByCoords(lat, lon) {
         if (!res.ok) throw new Error(`API error ${res.status}`);
         const data = await res.json();
         showCurrent(data);
+        getForecastByCoords(lat, lon);
     } catch (error) {
         console.error("Error fetching weather data:", error);
         alert("Could not retrieve weather data. Please try again later.");
@@ -74,4 +76,37 @@ function showCurrent(data) {
     </div>
   `;
   elements.currentContent.innerHTML = html;
+}
+
+async function getForecastByCoords(lat, lon) {
+  try {
+    const url = `${BASE}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`API error ${res.status}`);
+    const data = await res.json();
+    showForecast(data);
+  } catch (err) {
+    console.error("Forecast error:", err);
+  }
+}
+
+function showForecast(data) {
+  elements.forecastSection.classList.remove("hidden");
+  // show next 6 entries (3-hr intervals)
+  const nextSix = data.list.slice(0, 6);
+  elements.forecastContent.innerHTML = nextSix.map(item => {
+    const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
+    return `
+      <div class="forecastItem">
+        <div style="width:140px">
+          <div class="small">${new Date(item.dt*1000).toLocaleString()}</div>
+        </div>
+        <div><img src="${icon}" alt="${item.weather[0].description}"/></div>
+        <div>
+          <div><strong>${Math.round(item.main.temp)}°C</strong> — ${item.weather[0].main}</div>
+          <div class="small">Pop: ${(item.pop*100).toFixed(0)}% • ${item.weather[0].description}</div>
+        </div>
+      </div>
+    `;
+  }).join("");
 }
